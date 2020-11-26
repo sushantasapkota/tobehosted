@@ -1,0 +1,79 @@
+{% extends "post/base.html" %}
+{% block content %}
+<br>
+<main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8">
+          <h2>Latest Posts</h2>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% for post in posts %}
+        <div class="card">
+            <div class="card-header">
+                <a class="article-title" href="{% url 'post-detail' post.id %}"> {{ post.title }} Post No. {{post.id}}</a>
+            </div>
+            <div class="card-body">
+                <h4><a  href="#">{{ post.author }}</a></h4>
+                <small class="text-muted">{{ post.date_posted }}</small>
+                <br>
+              <blockquote class="blockquote mb-0">
+                {% if post.title == 'Food' %}
+                <p>Type of food:{{ object.type_food }}</p>
+                <p>Food remains fresh for:{{object.food_fresh}} hours</p>
+                {% endif %}
+                <p> Pickup Location of {{ post.title }}:{{ post.pickup_location }}</p>
+                <p>{{ post.title }} can serve:{{post.served_people}} number of people</p>
+                {% if post.title == 'Clothes' %}
+        <p>Age group of Clothes:{{ post.agegroupofclothes }}</p>
+        {% endif %}
+                <!-- <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer> -->
+              </blockquote>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="pagination">
+          <!-- {{posts.has_previous}}
+          {{posts.number}}
+          {{posts.paginator.count}}
+          {{posts.paginator.num_pages}}
+          {{posts.paginator.page_range}}
+          {{posts.has_next}} -->
+          {% if posts.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{posts.previous_page_number }}">Previous</a>
+          {% endif %}
+          {% for num in posts.paginator.page_range %}
+            {% if posts.number  ==  num %}
+            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+          {% if posts.has_next %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ posts.next_page_number }}">Next</a>
+          <a class="btn btn-outline-info mb-4" href="?page={{posts.paginator.num_pages}}">Last</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="content-section">
+          <h3>Financial Help</h3>
+          <p class='text-muted'>You can proceed for financial help to the social Organizations
+            <ul class="list-group">
+              
+              <li class="list-group-item list-group-item-dark">List of Social Organizations</li>
+              {% for org in organizations %}
+              <li class="list-group-item list-group-item-light">{{org.org_name}}    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;   <a href="{% url 'post-pay' %}"><button type="button" class="btn btn-warning text-right" >Go to Payment</button></a> </li>
+              {% endfor %}
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock content%}

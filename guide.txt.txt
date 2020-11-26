@@ -1,0 +1,4 @@
+to setup stripe:
+1) open your stripe account by going to 'https://stripe.com/'
+2)after full registration goto 'https://dashboard.stripe.com/test/dashboard' and open get your API keys and it shows your api key in the form of 'pk_test_51Hh....'
+3) paste it to the post/templates/post/index.html on line 290 and place your secret key on views.py also.
